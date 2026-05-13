@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--
+  PÁGINA: Consultar número (consultar.html)
+  CONTROLLER: ConsultaController.java
+    GET @GetMapping("/consultar")
+      - sem parâmetro   → model com "recentes" (lista de TelefoneSuspeito)
+      - com ?numero=XXX → model com "resultado" (TelefoneSuspeito ou null) + "recentes"
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(
+          'Consultar Número',
+          ~{::main},
+          'consultar'
+      )}">
+<body>
+<main>
+  <div class="container">
+ 
+    <!-- ── CARD DE BUSCA ── -->
+    <div class="search-card">
+      <h2>Consultar número suspeito</h2>
+      <p class="subtitle">Digite o número que ligou para você e veja se há denúncias registradas.</p>
+ 
+      <!--
+        Envia GET /consultar?numero=XXXX
+        O controller lê com @RequestParam String numero
+      -->
+      <form th:action="@{/consultar}" method="get" class="search-row">
+        <input type="text"
+               name="numero"
+               th:value="${param.numero}"
+               placeholder="Ex: (11) 3456-7890"
+               autocomplete="off"/>
+        <button type="submit" class="btn btn-primary">Consultar</button>
+      </form>
+    </div>
+ 
+    <!-- ── RESULTADO DA BUSCA (aparece só quando há busca) ── -->
+    <!--
+      "resultado" é um objeto TelefoneSuspeito (ou null se não encontrado)
+      "nivelRisco" é uma String: "ALTO", "MEDIO" ou "SEM"
+      passados pelo controller quando param.numero existe
+    -->
+ 
+    <!-- número encontrado com risco -->
+    <div th:if="${resultado != null and nivelRisco != 'SEM'}"
+         th:classappend="${nivelRisco == 'ALTO'} ? 'result-card alto' : 'result-card medio'"
+         class="result-card">
+      <div class="result-header">
+        <span class="result-numero" th:text="${resultado.numero}"></span>
+        <span th:if="${nivelRisco == 'ALTO'}" class="badge badge-alto">● Alto risco</span>
+        <span th:if="${nivelRisco == 'MEDIO'}" class="badge badge-medio">● Médio risco</span>
+      </div>
+      <div class="result-info"
+           th:text="${resultado.totalDenuncias} + ' denúncia(s) registrada(s) para este número'">
+      </div>
+    </div>
+ 
+    <!-- número sem denúncias -->
+    <div th:if="${resultado != null and nivelRisco == 'SEM'}" class="result-card sem">
+      <div class="result-header">
+        <span class="result-numero" th:text="${resultado.numero}"></span>
+        <span class="badge badge-sem">● Sem denúncias</span>
+      </div>
+      <div class="result-info">Nenhuma denúncia encontrada para este número.</div>
+    </div>
+ 
+    <!-- número não cadastrado -->
+    <div th:if="${param.numero != null and resultado == null}" class="result-card sem">
+      <div class="result-header">
+        <span class="result-numero" th:text="${param.numero}"></span>
+        <span class="badge badge-sem">● Sem denúncias</span>
+      </div>
+      <div class="result-info">Número não encontrado no nosso banco de dados.</div>
+    </div>
+ 
+    <!-- ── CONSULTAS RECENTES ── -->
+    <!--
+      "recentes" é uma List<TelefoneSuspeito> passada pelo controller
+      cada item tem: numero, totalDenuncias, bloqueado
+    -->
+    <div th:if="${recentes != null and !recentes.isEmpty()}">
+      <p class="recentes-label">Consultas recentes</p>
+ 
+      <div class="search-card" style="padding: 0 1.75rem;">
+        <div th:each="tel : ${recentes}" class="recente-item">
+          <span class="recente-num" th:text="${tel.numero}"></span>
+          <span th:if="${tel.totalDenuncias >= 5}"  class="badge badge-alto">Alto risco</span>
+          <span th:if="${tel.totalDenuncias >= 1 and tel.totalDenuncias < 5}" class="badge badge-medio">Médio risco</span>
+          <span th:if="${tel.totalDenuncias == 0}"  class="badge badge-sem">Sem denúncias</span>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- fallback: dados mockados para visualizar enquanto não tem backend -->
+    <div th:if="${recentes == null or recentes.isEmpty()}">
+      <p class="recentes-label">Consultas recentes</p>
+      <div class="search-card" style="padding: 0 1.75rem;">
+        <div class="recente-item">
+          <span class="recente-num">(11) 9876-5432</span>
+          <span class="badge badge-alto">Alto risco</span>
+        </div>
+        <div class="recente-item">
+          <span class="recente-num">0800 722 4433</span>
+          <span class="badge badge-medio">Médio risco</span>
+        </div>
+        <div class="recente-item">
+          <span class="recente-num">(21) 5544-3322</span>
+          <span class="badge badge-sem">Sem denúncias</span>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</main>
+</body>
+</html>

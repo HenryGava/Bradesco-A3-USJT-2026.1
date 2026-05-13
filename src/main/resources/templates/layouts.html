@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(titulo, conteudo, paginaAtiva)">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="${titulo} + ' — Sentinela 0800'">Sentinela 0800</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a th:href="@{/}" class="nav-brand">
+    <!-- ícone de escudo -->
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    Sentinela 0800
+  </a>
+  <div class="nav-links">
+    <a th:href="@{/}"
+       th:classappend="${paginaAtiva == 'inicio'} ? 'active'">Início</a>
+    <a th:href="@{/consultar}"
+       th:classappend="${paginaAtiva == 'consultar'} ? 'active'">Consultar número</a>
+    <a th:href="@{/denunciar}"
+       th:classappend="${paginaAtiva == 'denunciar'} ? 'active'">Denunciar</a>
+  </div>
+</nav>
+
+<!-- injeta o conteúdo de cada página aqui -->
+<th:block th:replace="${conteudo}"/>
+
+</body>
+</html>

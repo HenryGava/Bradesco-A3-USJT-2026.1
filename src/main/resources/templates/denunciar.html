@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+  PÁGINA: Denunciar (denunciar.html)
+  CONTROLLER: DenunciaController.java
+    GET  @GetMapping("/denunciar")   → model.addAttribute("denuncia", new Denuncia())
+    POST @PostMapping("/denunciar")  → salva e redireciona com ?sucesso
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(
+          'Fazer Denúncia',
+          ~{::main},
+          'denunciar'
+      )}">
+<body>
+<main>
+  <div class="container">
+
+    <!-- mensagem de sucesso após envio -->
+    <div class="flash flash-success"
+         th:if="${param.sucesso}">
+      ✓ Denúncia registrada com sucesso! Obrigado por ajudar a proteger outras pessoas.
+    </div>
+
+    <!-- mensagem de erro -->
+    <div class="flash flash-error"
+         th:if="${param.erro}">
+      ✗ Ocorreu um erro ao registrar a denúncia. Tente novamente.
+    </div>
+
+    <div class="form-card">
+      <h2>Registrar denúncia</h2>
+      <p class="subtitle">Preencha os dados da ligação suspeita que você recebeu.</p>
+
+      <!--
+        th:action  → envia POST para /denunciar
+        th:object  → vincula ao objeto Denuncia do controller
+      -->
+      <form th:action="@{/denunciar}" th:object="${denuncia}" method="post">
+
+        <!-- Número suspeito -->
+        <div class="form-group">
+          <label for="numeroSuspeito">Número suspeito</label>
+          <input type="text"
+                 id="numeroSuspeito"
+                 th:field="*{numeroSuspeito}"
+                 placeholder="Ex: (11) 3456-7890"/>
+          <!-- erro de validação -->
+          <small style="color:var(--red);font-size:11px;margin-top:4px;display:block"
+                 th:if="${#fields.hasErrors('numeroSuspeito')}"
+                 th:errors="*{numeroSuspeito}"></small>
+        </div>
+
+        <!-- Tipo do golpe + Estado -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tipoGolpe">Tipo do golpe</label>
+            <select id="tipoGolpe" th:field="*{tipoGolpe}">
+              <option value="">Selecione...</option>
+              <option value="FALSA_CENTRAL">Falsa central de atendimento</option>
+              <option value="PIX_FALSO">PIX falso</option>
+              <option value="WHATSAPP">WhatsApp clonado</option>
+              <option value="PHISHING">Phishing (link falso)</option>
+              <option value="OUTRO">Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select id="estado" th:field="*{estado}">
+              <option value="">Selecione...</option>
+              <option value="AC">AC</option><option value="AL">AL</option>
+              <option value="AM">AM</option><option value="BA">BA</option>
+              <option value="CE">CE</option><option value="DF">DF</option>
+              <option value="ES">ES</option><option value="GO">GO</option>
+              <option value="MA">MA</option><option value="MG">MG</option>
+              <option value="MS">MS</option><option value="MT">MT</option>
+              <option value="PA">PA</option><option value="PB">PB</option>
+              <option value="PE">PE</option><option value="PI">PI</option>
+              <option value="PR">PR</option><option value="RJ">RJ</option>
+              <option value="RN">RN</option><option value="RO">RO</option>
+              <option value="RR">RR</option><option value="RS">RS</option>
+              <option value="SC">SC</option><option value="SE">SE</option>
+              <option value="SP" selected>SP</option><option value="TO">TO</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-group">
+          <label for="descricao">O que aconteceu? (opcional)</label>
+          <textarea id="descricao"
+                    th:field="*{descricao}"
+                    placeholder="Descreva brevemente a ligação..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">
+          Enviar denúncia
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</main>
+</body>
+</html>
