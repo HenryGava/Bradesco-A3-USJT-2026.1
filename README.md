@@ -18,7 +18,7 @@
 
 ## 📌 Sobre o Projeto
 
-O **Sentinela 0800** é uma aplicação web desenvolvida como resposta ao crescimento dos golpes de falsas centrais de atendimento bancário — um dos tipos de fraude mais comuns no Brasil, conforme alertas do [Banco Central](https://www.bcb.gov.br/meubc/faqs/p/cuidado-com-ligacoes-de-falsas-centrais-de-atendimento).
+O **Sentinela 0800** é uma aplicação web desenvolvida como resposta ao crescimento dos golpes de falsas centrais de atendimento bancário — um dos tipos de fraude mais comuns no Brasil.
 
 A plataforma permite que qualquer cidadão **denuncie um número de telefone suspeito** e **consulte se um número já foi reportado**, calculando automaticamente o nível de risco com base no histórico de denúncias registradas.
 
@@ -41,7 +41,7 @@ A plataforma permite que qualquer cidadão **denuncie um número de telefone sus
 ```
 ┌─────────────────────────────────────────────────┐
 │                   Navegador                     │
-│              (Thymeleaf + HTML/CSS)             │
+│                    (Thymeleaf)                  │
 └───────────────────┬─────────────────────────────┘
                     │ HTTP
 ┌───────────────────▼─────────────────────────────┐
