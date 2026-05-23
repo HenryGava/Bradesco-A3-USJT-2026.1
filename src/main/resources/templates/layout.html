@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+    ARQUIVO: layout.html
+    ONDE COLOCAR: src/main/resources/templates/layout.html
+
+    Este arquivo é o "esqueleto" compartilhado por todas as páginas.
+    Contém o <head>, o <link> do CSS e a navbar.
+    Cada página usa th:replace para injetar seu conteúdo aqui.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(titulo, conteudo, paginaAtiva)">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${titulo} + ' — Sentinela 0800'">Sentinela 0800</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+
+    <!-- Logo / nome do sistema -->
+    <a th:href="@{/}" class="navbar-brand">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Sentinela 0800
+    </a>
+
+    <!-- Links de navegação -->
+    <!-- th:classappend adiciona a classe "ativo" no link da página atual -->
+    <div class="navbar-links">
+        <a th:href="@{/}"
+           th:classappend="${paginaAtiva == 'inicio'} ? ' ativo'">
+            Início
+        </a>
+        <a th:href="@{/consultar}"
+           th:classappend="${paginaAtiva == 'consultar'} ? ' ativo'">
+            Consultar número
+        </a>
+        <a th:href="@{/denunciar}"
+           th:classappend="${paginaAtiva == 'denunciar'} ? ' ativo'">
+            Denunciar
+        </a>
+    </div>
+
+</nav>
+
+<!-- ── CONTEÚDO DA PÁGINA ── -->
+<!-- cada página injeta seu próprio <main> aqui -->
+<th:block th:replace="${conteudo}"/>
+
+</body>
+</html>

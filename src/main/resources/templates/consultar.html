@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Consultar Número', ~{::main}, 'consultar')}">
+<body>
+<main>
+<div class="container">
+
+    <!-- ── CARD DE BUSCA ── -->
+    <div class="busca-card">
+
+        <h2 class="busca-titulo">Consultar número suspeito</h2>
+        <p class="busca-subtitulo">
+            Digite o número que ligou para você e veja se há denúncias registradas.
+        </p>
+
+        <!--
+            method="get" → envia GET /consultar?numero=XXXXXX
+            O controller lê com @RequestParam String numero
+        -->
+        <form th:action="@{/consultar}" method="get" class="busca-row">
+            <input type="text"
+                   name="numero"
+                   th:value="${param.numero}"
+                   placeholder="Ex: (11) 3456-7890"
+                   autocomplete="off"/>
+            <button type="submit" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                Consultar
+            </button>
+        </form>
+
+    </div><!-- /busca-card -->
+
+    <!-- ══════════════════════════════════════════════════════
+         RESULTADO DA BUSCA
+         Aparece somente quando o controller passa "resultado"
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- ALTO RISCO (5+ denúncias) -->
+    <div class="resultado-card alto"
+         th:if="${resultado != null and nivelRisco == 'ALTO'}">
+        <div class="resultado-header">
+            <span class="resultado-numero" th:text="${resultado.numero}"></span>
+            <span class="badge badge-alto">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+                Alto risco
+            </span>
+        </div>
+        <div class="resultado-info"
+             th:text="${resultado.totalDenuncias} + ' denúncia(s) registrada(s) para este número'">
+        </div>
+    </div>
+
+    <!-- MÉDIO RISCO (1-4 denúncias) -->
+    <div class="resultado-card medio"
+         th:if="${resultado != null and nivelRisco == 'MEDIO'}">
+        <div class="resultado-header">
+            <span class="resultado-numero" th:text="${resultado.numero}"></span>
+            <span class="badge badge-medio">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+                Médio risco
+            </span>
+        </div>
+        <div class="resultado-info"
+             th:text="${resultado.totalDenuncias} + ' denúncia(s) registrada(s) para este número'">
+        </div>
+    </div>
+
+    <!-- SEM DENÚNCIAS (número cadastrado mas sem ocorrências) -->
+    <div class="resultado-card sem"
+         th:if="${resultado != null and nivelRisco == 'SEM'}">
+        <div class="resultado-header">
+            <span class="resultado-numero" th:text="${resultado.numero}"></span>
+            <span class="badge badge-sem">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+                Sem denúncias
+            </span>
+        </div>
+        <div class="resultado-info">Nenhuma denúncia encontrada para este número.</div>
+    </div>
+
+    <!-- NÚMERO NÃO ENCONTRADO NO BANCO -->
+    <div class="resultado-card sem"
+         th:if="${param.numero != null and resultado == null}">
+        <div class="resultado-header">
+            <span class="resultado-numero" th:text="${param.numero}"></span>
+            <span class="badge badge-sem">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+                Sem denúncias
+            </span>
+        </div>
+        <div class="resultado-info">Número não encontrado no nosso banco de dados.</div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         LISTA DE RECENTES
+         th:each percorre a lista "recentes" vinda do controller
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- lista real vinda do banco -->
+    <div th:if="${recentes != null and !#lists.isEmpty(recentes)}">
+        <p class="recentes-label">Consultas recentes</p>
+        <div class="recentes-card">
+            <!--
+                th:each="tel : ${recentes}"
+                para cada TelefoneSuspeito na lista, repete este bloco
+            -->
+            <div class="recente-item" th:each="tel : ${recentes}">
+                <span class="recente-numero" th:text="${tel.numero}"></span>
+
+                <!-- badge de risco calculado pelo total de denúncias -->
+                <span class="badge badge-alto"
+                      th:if="${tel.totalDenuncias >= 5}">
+                    Alto risco
+                </span>
+                <span class="badge badge-medio"
+                      th:if="${tel.totalDenuncias >= 1 and tel.totalDenuncias < 5}">
+                    Médio risco
+                </span>
+                <span class="badge badge-sem"
+                      th:if="${tel.totalDenuncias == 0}">
+                    Sem denúncias
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- fallback visual: dados mockados enquanto o backend não está pronto -->
+    <div th:if="${recentes == null or #lists.isEmpty(recentes)}">
+        <p class="recentes-label">Consultas recentes</p>
+        <div class="recentes-card">
+            <div class="recente-item">
+                <span class="recente-numero">(11) 9876-5432</span>
+                <span class="badge badge-alto">Alto risco</span>
+            </div>
+            <div class="recente-item">
+                <span class="recente-numero">0800 722 4433</span>
+                <span class="badge badge-medio">Médio risco</span>
+            </div>
+            <div class="recente-item">
+                <span class="recente-numero">(21) 5544-3322</span>
+                <span class="badge badge-sem">Sem denúncias</span>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+</main>
+</body>
+</html>

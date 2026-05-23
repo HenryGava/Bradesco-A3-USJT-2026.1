@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+    ARQUIVO: denunciar.html
+    ONDE COLOCAR: src/main/resources/templates/denunciar.html
+
+    CONTROLLER NECESSÁRIO: DenunciaController.java
+    ─────────────────────────────────────────────
+    @Controller
+    public class DenunciaController {
+
+        @Autowired
+        private DenunciaService denunciaService;
+
+        // GET: abre o formulário vazio
+        @GetMapping("/denunciar")
+        public String formulario(Model model) {
+            model.addAttribute("denuncia", new Denuncia());
+            return "denunciar";
+        }
+
+        // POST: recebe os dados do formulário e salva
+        @PostMapping("/denunciar")
+        public String salvar(@Valid @ModelAttribute("denuncia") Denuncia denuncia,
+                             BindingResult result, Model model) {
+            if (result.hasErrors()) {
+                return "denunciar"; // volta ao form com erros
+            }
+            denunciaService.salvar(denuncia);
+            return "redirect:/denunciar?sucesso"; // redireciona com mensagem
+        }
+    }
+    ─────────────────────────────────────────────
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Denunciar', ~{::main}, 'denunciar')}">
+<main>
+<div class="container">
+
+    <!-- ── MENSAGEM DE SUCESSO ── -->
+    <!-- aparece quando a URL tem ?sucesso, ex: /denunciar?sucesso -->
+    <div class="flash flash-sucesso" th:if="${param.sucesso}">
+        ✓ Denúncia registrada com sucesso! Obrigado por ajudar a proteger outras pessoas.
+    </div>
+
+    <!-- ── MENSAGEM DE ERRO GERAL ── -->
+    <div class="flash flash-erro" th:if="${param.erro}">
+        ✗ Ocorreu um erro ao registrar a denúncia. Tente novamente.
+    </div>
+
+    <!-- ── FORMULÁRIO ── -->
+    <div class="form-card">
+
+        <h2 class="form-titulo">Registrar denúncia</h2>
+        <p class="form-subtitulo">Preencha os dados da ligação suspeita que você recebeu.</p>
+
+        <!--
+            th:action  → envia POST para /denunciar
+            th:object  → vincula ao objeto Denuncia do controller
+            method="post" → método HTTP POST
+        -->
+        <form th:action="@{/denunciar}" th:object="${denuncia}" method="post">
+
+            <!-- NÚMERO SUSPEITO -->
+            <div class="form-group">
+                <label for="numeroSuspeito">Número suspeito</label>
+                <input type="text"
+                       id="numeroSuspeito"
+                       th:field="*{numeroSuspeito}"
+                       placeholder="Ex: (11) 3456-7890"/>
+                <!-- mensagem de erro de validação do campo -->
+                <span class="erro-campo"
+                      th:if="${#fields.hasErrors('numeroSuspeito')}"
+                      th:errors="*{numeroSuspeito}">
+                </span>
+            </div>
+
+            <!-- TIPO DO GOLPE + ESTADO -->
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="tipoGolpe">Tipo do golpe</label>
+                    <!--
+                        th:field="*{tipoGolpe}" → vincula ao atributo tipoGolpe do objeto Denuncia
+                    -->
+                    <select id="tipoGolpe" th:field="*{tipoGolpe}">
+                        <option value="">Selecione...</option>
+                        <option value="FALSA_CENTRAL">Falsa central de atendimento</option>
+                        <option value="PIX_FALSO">PIX falso</option>
+                        <option value="WHATSAPP">WhatsApp clonado</option>
+                        <option value="PHISHING">Phishing (link falso)</option>
+                        <option value="OUTRO">Outro</option>
+                    </select>
+                    <span class="erro-campo"
+                          th:if="${#fields.hasErrors('tipoGolpe')}"
+                          th:errors="*{tipoGolpe}">
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select id="estado" th:field="*{estado}">
+                        <option value="">Selecione...</option>
+                        <option value="AC">AC — Acre</option>
+                        <option value="AL">AL — Alagoas</option>
+                        <option value="AM">AM — Amazonas</option>
+                        <option value="BA">BA — Bahia</option>
+                        <option value="CE">CE — Ceará</option>
+                        <option value="DF">DF — Distrito Federal</option>
+                        <option value="ES">ES — Espírito Santo</option>
+                        <option value="GO">GO — Goiás</option>
+                        <option value="MA">MA — Maranhão</option>
+                        <option value="MG">MG — Minas Gerais</option>
+                        <option value="MS">MS — Mato Grosso do Sul</option>
+                        <option value="MT">MT — Mato Grosso</option>
+                        <option value="PA">PA — Pará</option>
+                        <option value="PB">PB — Paraíba</option>
+                        <option value="PE">PE — Pernambuco</option>
+                        <option value="PI">PI — Piauí</option>
+                        <option value="PR">PR — Paraná</option>
+                        <option value="RJ">RJ — Rio de Janeiro</option>
+                        <option value="RN">RN — Rio Grande do Norte</option>
+                        <option value="RO">RO — Rondônia</option>
+                        <option value="RR">RR — Roraima</option>
+                        <option value="RS">RS — Rio Grande do Sul</option>
+                        <option value="SC">SC — Santa Catarina</option>
+                        <option value="SE">SE — Sergipe</option>
+                        <option value="SP">SP — São Paulo</option>
+                        <option value="TO">TO — Tocantins</option>
+                    </select>
+                    <span class="erro-campo"
+                          th:if="${#fields.hasErrors('estado')}"
+                          th:errors="*{estado}">
+                    </span>
+                </div>
+
+            </div><!-- /form-row -->
+
+            <!-- DESCRIÇÃO -->
+            <div class="form-group">
+                <label for="descricao">O que aconteceu? (opcional)</label>
+                <textarea id="descricao"
+                          th:field="*{descricao}"
+                          placeholder="Descreva brevemente a ligação...">
+                </textarea>
+            </div>
+
+            <!-- BOTÃO ENVIAR -->
+            <button type="submit" class="btn btn-primary btn-full">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                Enviar denúncia
+            </button>
+
+        </form>
+
+    </div><!-- /form-card -->
+
+</div><!-- /container -->
+</main>
+</body>
+</html>

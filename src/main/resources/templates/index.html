@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Início', ~{::main}, 'inicio')}">
+<body>
+<main>
+<div class="container">
+    <div class="hero">
+        <h1 class="hero-titulo">SENTINELA 0800</h1>
+
+        <p class="hero-desc">
+            Recebeu alguma ligação suspeita?
+            Golpistas ligam fingindo ser centrais de atendimento para roubar seus dados.
+            Consulte se o número é seguro ou denuncie agora.
+        </p>
+        <div class="btn-group">
+            <a th:href="@{/consultar}" class="btn btn-outline">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                Consultar número
+            </a>
+            <a th:href="@{/denunciar}" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                    <line x1="4" y1="22" x2="4" y2="15"/>
+                </svg>
+                Fazer denúncia
+            </a>
+        </div>
+
+    </div>
+    <div class="dicas-grid">
+        <div class="dica-card">
+            <div class="dica-icone">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="1"  y1="1"  x2="23" y2="23"/>
+                    <path d="M16.72 11.06A10.94 10.94 0 0119 12.55"/>
+                    <path d="M5 12.55a10.94 10.94 0 015.17-2.39"/>
+                    <path d="M10.71 5.05A16 16 0 0122.56 9"/>
+                    <path d="M1.42 9a15.91 15.91 0 014.7-2.88"/>
+                    <path d="M8.53 16.11a6 6 0 016.95 0"/>
+                    <line x1="12" y1="20" x2="12.01" y2="20"/>
+                </svg>
+            </div>
+            <h3 class="dica-titulo">O banco nunca liga pedindo sua senha</h3>
+            <p class="dica-texto">
+                Nenhuma central legítima solicita a sua senha, token ou código por telefone.
+            </p>
+        </div>
+        <div class="dica-card">
+            <div class="dica-icone">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                    <line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+            </div>
+            <h3 class="dica-titulo">Não instale apps por orientação de ligação</h3>
+            <p class="dica-texto">
+                Golpistas pedem para instalar aplicativos de acesso remoto durante a chamada.
+            </p>
+        </div>
+        <div class="dica-card">
+            <div class="dica-icone">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <h3 class="dica-titulo">Desligue e ligue de volta</h3>
+            <p class="dica-texto">
+                Se desconfiar, encerre a chamada e ligue para o número oficial do seu banco.
+            </p>
+        </div>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-numero" th:text="${totalDenuncias} ?: '1.284'">1.284</div>
+            <div class="stat-label">Denúncias registradas</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-numero" th:text="${totalSuspeitos} ?: '342'">342</div>
+            <div class="stat-label">Números suspeitos</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-numero" th:text="${percentualFalsaCentral} ?: '89%'">89%</div>
+            <div class="stat-label">Golpes de falsa central</div>
+        </div>
+
+    </div>
+</div>
+</main>
+</body>
+</html>
