@@ -1,0 +1,11 @@
+com\example\sentinela2\model\Denuncia.class
+com\example\sentinela2\controller\HomeController.class
+com\example\sentinela2\service\DenunciaService.class
+com\example\sentinela2\dto\DenunciaResponseDTO.class
+com\example\sentinela2\dto\DenunciaRequestDTO.class
+com\example\sentinela2\specification\DenunciaSpecification.class
+com\example\sentinela2\model\DenunciaStatus.class
+com\example\sentinela2\Sentinela2Application.class
+com\example\sentinela2\controller\DenunciaController.class
+com\example\sentinela2\repository\DenunciaRepository.class
+com\example\sentinela2\model\TipoAmeaca.class
