@@ -14,6 +14,10 @@ public class Denuncia {
     @Column(nullable = false)
     private String titulo;
 
+    // número do telefone suspeito — campo novo
+    @Column(nullable = false)
+    private String numero;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
@@ -31,62 +35,23 @@ public class Denuncia {
     @Column(nullable = false, name = "usuario_id")
     private String usuarioId;
 
-    public Denuncia() {
-    }
+    public Denuncia() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public TipoAmeaca getTipoAmeaca() {
-        return tipoAmeaca;
-    }
-
-    public void setTipoAmeaca(TipoAmeaca tipoAmeaca) {
-        this.tipoAmeaca = tipoAmeaca;
-    }
-
-    public DenunciaStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(DenunciaStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getData() {
-        return data;
-    }
-
-    public void setData(LocalDateTime data) {
-        this.data = data;
-    }
-
-    public String getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(String usuarioId) {
-        this.usuarioId = usuarioId;
-    }
+    // getters e setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public TipoAmeaca getTipoAmeaca() { return tipoAmeaca; }
+    public void setTipoAmeaca(TipoAmeaca tipoAmeaca) { this.tipoAmeaca = tipoAmeaca; }
+    public DenunciaStatus getStatus() { return status; }
+    public void setStatus(DenunciaStatus status) { this.status = status; }
+    public LocalDateTime getData() { return data; }
+    public void setData(LocalDateTime data) { this.data = data; }
+    public String getUsuarioId() { return usuarioId; }
+    public void setUsuarioId(String usuarioId) { this.usuarioId = usuarioId; }
 }

@@ -13,16 +13,15 @@
             Digite o número que ligou para você e veja se há denúncias registradas.
         </p>
 
-        <!--
-            method="get" → envia GET /consultar?numero=XXXXXX
-            O controller lê com @RequestParam String numero
-        -->
         <form th:action="@{/consultar}" method="get" class="busca-row">
             <input type="text"
+                   id="numero"
                    name="numero"
                    th:value="${param.numero}"
-                   placeholder="Ex: (11) 3456-7890"
-                   autocomplete="off"/>
+                   placeholder="Ex: +55 (11) 99999-9999"
+                   maxlength="19"
+                   autocomplete="off"
+                   oninput="mascaraTelefone(this)"/>
             <button type="submit" class="btn btn-primary">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -34,11 +33,6 @@
         </form>
 
     </div><!-- /busca-card -->
-
-    <!-- ══════════════════════════════════════════════════════
-         RESULTADO DA BUSCA
-         Aparece somente quando o controller passa "resultado"
-         ══════════════════════════════════════════════════════ -->
 
     <!-- ALTO RISCO (5+ denúncias) -->
     <div class="resultado-card alto"
@@ -70,7 +64,7 @@
         </div>
     </div>
 
-    <!-- SEM DENÚNCIAS (número cadastrado mas sem ocorrências) -->
+    <!-- SEM DENÚNCIAS -->
     <div class="resultado-card sem"
          th:if="${resultado != null and nivelRisco == 'SEM'}">
         <div class="resultado-header">
@@ -96,59 +90,64 @@
         <div class="resultado-info">Número não encontrado no nosso banco de dados.</div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════
-         LISTA DE RECENTES
-         th:each percorre a lista "recentes" vinda do controller
-         ══════════════════════════════════════════════════════ -->
-
     <!-- lista real vinda do banco -->
     <div th:if="${recentes != null and !#lists.isEmpty(recentes)}">
-        <p class="recentes-label">Consultas recentes</p>
+        <p class="recentes-label">Mais denunciados</p>
         <div class="recentes-card">
-            <!--
-                th:each="tel : ${recentes}"
-                para cada TelefoneSuspeito na lista, repete este bloco
-            -->
             <div class="recente-item" th:each="tel : ${recentes}">
                 <span class="recente-numero" th:text="${tel.numero}"></span>
-
-                <!-- badge de risco calculado pelo total de denúncias -->
                 <span class="badge badge-alto"
-                      th:if="${tel.totalDenuncias >= 5}">
-                    Alto risco
-                </span>
+                      th:if="${tel.totalDenuncias >= 5}">Alto risco</span>
                 <span class="badge badge-medio"
-                      th:if="${tel.totalDenuncias >= 1 and tel.totalDenuncias < 5}">
-                    Médio risco
-                </span>
+                      th:if="${tel.totalDenuncias >= 1 and tel.totalDenuncias < 5}">Médio risco</span>
                 <span class="badge badge-sem"
-                      th:if="${tel.totalDenuncias == 0}">
-                    Sem denúncias
-                </span>
+                      th:if="${tel.totalDenuncias == 0}">Sem denúncias</span>
             </div>
         </div>
     </div>
 
-    <!-- fallback visual: dados mockados enquanto o backend não está pronto -->
+    <!-- fallback mockado enquanto banco estiver vazio -->
     <div th:if="${recentes == null or #lists.isEmpty(recentes)}">
-        <p class="recentes-label">Consultas recentes</p>
+        <p class="recentes-label">Mais denunciados</p>
         <div class="recentes-card">
             <div class="recente-item">
-                <span class="recente-numero">(11) 9876-5432</span>
+                <span class="recente-numero">+55 (11) 9876-5432</span>
                 <span class="badge badge-alto">Alto risco</span>
             </div>
             <div class="recente-item">
-                <span class="recente-numero">0800 722 4433</span>
+                <span class="recente-numero">+55 (21) 0800-7224</span>
                 <span class="badge badge-medio">Médio risco</span>
             </div>
             <div class="recente-item">
-                <span class="recente-numero">(21) 5544-3322</span>
+                <span class="recente-numero">+55 (21) 5544-3322</span>
                 <span class="badge badge-sem">Sem denúncias</span>
             </div>
         </div>
     </div>
 
 </div><!-- /container -->
+
+<script>
+function mascaraTelefone(input) {
+    let v = input.value.replace(/\D/g, '');
+
+    if (v.length === 0) { input.value = ''; return; }
+
+    if (v.length <= 2) {
+        input.value = '+' + v;
+    } else if (v.length <= 4) {
+        input.value = '+' + v.substring(0,2) + ' (' + v.substring(2);
+    } else if (v.length <= 9) {
+        input.value = '+' + v.substring(0,2) + ' (' + v.substring(2,4) + ') ' + v.substring(4);
+    } else if (v.length <= 13) {
+        input.value = '+' + v.substring(0,2) + ' (' + v.substring(2,4) + ') ' + v.substring(4,9) + '-' + v.substring(9);
+    } else {
+        v = v.substring(0, 13);
+        input.value = '+' + v.substring(0,2) + ' (' + v.substring(2,4) + ') ' + v.substring(4,9) + '-' + v.substring(9);
+    }
+}
+</script>
+
 </main>
 </body>
 </html>

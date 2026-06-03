@@ -4,8 +4,10 @@ C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\dto\Denu
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\dto\DenunciaResponseDTO.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\model\Denuncia.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\model\DenunciaStatus.java
+C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\model\TelefoneSuspeito.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\model\TipoAmeaca.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\repository\DenunciaRepository.java
+C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\repository\TelefoneSuspeitoRepository.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\Sentinela2Application.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\service\DenunciaService.java
 C:\Users\henry\Desktop\A3 Bradesco\src\main\java\com\example\sentinela2\specification\DenunciaSpecification.java
