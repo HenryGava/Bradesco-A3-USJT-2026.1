@@ -21,6 +21,9 @@
     --green:         #22c55e;
     --green-soft:    rgba(34,197,94,0.11);
     --green-border:  rgba(34,197,94,0.22);
+    --blue:          #3b82f6;
+    --blue-soft:     rgba(59,130,246,0.12);
+    --blue-border:   rgba(59,130,246,0.28);
     --radius-lg:     14px;
     --radius-md:     10px;
     --radius-sm:     7px;
@@ -34,7 +37,7 @@ body {
     min-height: 100vh;
 }
 
-/* ── NAVBAR ── */
+/*NAVBAR*/
 .navbar {
     display: flex;
     align-items: center;
@@ -77,10 +80,10 @@ body {
 .navbar-links a:hover { color: var(--text); background: var(--surface2); border-color: var(--border); }
 .navbar-links a.ativo  { color: var(--text); background: var(--surface2); border-color: var(--border2); }
 
-/* ── CONTAINER ── */
+/*CONTAINER*/
 .container { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
 
-/* ── HERO ── */
+/*HERO*/
 .hero {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -122,7 +125,7 @@ body {
 
 .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ── BOTÕES ── */
+/*BOTÕES*/
 .btn {
     display: inline-flex;
     align-items: center;
@@ -147,7 +150,7 @@ body {
 
 .btn-full { width: 100%; justify-content: center; padding: 11px; font-size: 14px; }
 
-/* ── DICAS ── */
+/*DICAS*/
 .dicas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -174,7 +177,7 @@ body {
 
 .dica-texto { color: var(--text-muted); font-size: 12px; line-height: 1.55; }
 
-/* ── STATS ── */
+/*STATS*/
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -199,7 +202,7 @@ body {
 
 .stat-label { font-size: 12px; color: var(--text-muted); }
 
-/* ── FORMULÁRIO ── */
+/*FORMULÁRIO*/
 .form-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -264,7 +267,6 @@ select {
 
 textarea { resize: vertical; min-height: 100px; }
 
-/* mensagem de erro de validação */
 .erro-campo {
     color: var(--red);
     font-size: 11px;
@@ -272,7 +274,6 @@ textarea { resize: vertical; min-height: 100px; }
     display: block;
 }
 
-/* flash messages */
 .flash {
     padding: 10px 14px;
     border-radius: var(--radius-sm);
@@ -282,7 +283,7 @@ textarea { resize: vertical; min-height: 100px; }
 .flash-sucesso { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
 .flash-erro    { background: var(--red-soft);   color: var(--red);   border: 1px solid var(--red-border);   }
 
-/* ── CONSULTA ── */
+/*CONSULTA*/
 .busca-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -303,7 +304,7 @@ textarea { resize: vertical; min-height: 100px; }
 .busca-row { display: flex; gap: 10px; }
 .busca-row input { flex: 1; }
 
-/* ── RESULTADO ── */
+/*RESULTADO*/
 .resultado-card {
     border-radius: var(--radius-lg);
     padding: 1.25rem 1.5rem;
@@ -314,6 +315,7 @@ textarea { resize: vertical; min-height: 100px; }
 
 .resultado-card.alto  { border-color: var(--red-border);   background: rgba(229,53,53,0.05); }
 .resultado-card.medio { border-color: var(--amber-border);  background: rgba(217,119,6,0.05); }
+.resultado-card.baixo { border-color: var(--blue-border);   background: rgba(59,130,246,0.05); }
 .resultado-card.sem   { border-color: var(--green-border);  background: rgba(34,197,94,0.04); }
 
 .resultado-header {
@@ -332,7 +334,7 @@ textarea { resize: vertical; min-height: 100px; }
 
 .resultado-info { font-size: 12px; color: var(--text-muted); }
 
-/* ── BADGES ── */
+/*BADGES*/
 .badge {
     display: inline-flex;
     align-items: center;
@@ -345,9 +347,10 @@ textarea { resize: vertical; min-height: 100px; }
 
 .badge-alto  { background: var(--red-soft);   color: var(--red);   border: 1px solid var(--red-border);   }
 .badge-medio { background: var(--amber-soft);  color: var(--amber); border: 1px solid var(--amber-border); }
+.badge-baixo { background: var(--blue-soft);   color: var(--blue);  border: 1px solid var(--blue-border);  }
 .badge-sem   { background: var(--green-soft);  color: var(--green); border: 1px solid var(--green-border); }
 
-/* ── LISTA RECENTES ── */
+/*LISTA RECENTES*/
 .recentes-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 
 .recentes-card {
@@ -373,7 +376,7 @@ textarea { resize: vertical; min-height: 100px; }
     letter-spacing: .02em;
 }
 
-/* ── RESPONSIVE ── */
+/*RESPONSIVE*/
 @media (max-width: 560px) {
     .navbar { padding: 0 1rem; }
     .navbar-links a { padding: 5px 10px; font-size: 12px; }

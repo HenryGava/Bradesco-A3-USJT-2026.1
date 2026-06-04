@@ -1,6 +1,9 @@
 package com.example.sentinela2.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,16 +14,20 @@ public class Denuncia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O título é obrigatório")
     @Column(nullable = false)
     private String titulo;
 
-    // número do telefone suspeito — campo novo
+    @NotBlank(message = "O número suspeito é obrigatório")
+    @Size(min = 19, message = "Digite o número completo com DDD e código do país")
     @Column(nullable = false)
     private String numero;
 
+    @NotBlank(message = "A descrição é obrigatória")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
+    @NotNull(message = "Selecione o tipo de ameaça")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoAmeaca tipoAmeaca;
@@ -37,7 +44,6 @@ public class Denuncia {
 
     public Denuncia() {}
 
-    // getters e setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getTitulo() { return titulo; }

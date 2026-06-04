@@ -21,6 +21,8 @@
                        id="titulo"
                        th:field="*{titulo}"
                        placeholder="Ex: Ligacao suspeita do Bradesco"/>
+                <span class="erro-campo" th:if="${#fields.hasErrors('titulo')}"
+                      th:errors="*{titulo}"></span>
             </div>
 
             <div class="form-group">
@@ -32,6 +34,8 @@
                        maxlength="19"
                        autocomplete="off"
                        oninput="mascaraTelefone(this)"/>
+                <span class="erro-campo" th:if="${#fields.hasErrors('numero')}"
+                      th:errors="*{numero}"></span>
             </div>
 
             <div class="form-group">
@@ -43,6 +47,8 @@
                     <option value="FISICA">Fisica</option>
                     <option value="OUTRA">Outra</option>
                 </select>
+                <span class="erro-campo" th:if="${#fields.hasErrors('tipoAmeaca')}"
+                      th:errors="*{tipoAmeaca}"></span>
             </div>
 
             <div class="form-group">
@@ -50,6 +56,8 @@
                 <textarea id="descricao"
                           th:field="*{descricao}"
                           placeholder="Descreva brevemente a ligacao..."></textarea>
+                <span class="erro-campo" th:if="${#fields.hasErrors('descricao')}"
+                      th:errors="*{descricao}"></span>
             </div>
 
             <button type="submit" class="btn btn-primary btn-full">

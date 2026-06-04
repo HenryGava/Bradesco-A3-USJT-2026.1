@@ -6,8 +6,10 @@ import com.example.sentinela2.model.TipoAmeaca;
 import com.example.sentinela2.model.TelefoneSuspeito;
 import com.example.sentinela2.repository.DenunciaRepository;
 import com.example.sentinela2.repository.TelefoneSuspeitoRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -31,7 +33,6 @@ public class HomeController {
         long totalDenuncias = denunciaRepository.count();
         long totalSuspeitos = telefoneRepository.count();
 
-        // calcula percentual de golpes de falsa central (tipo VIRTUAL)
         String percentualFalsaCentral;
         if (totalDenuncias == 0) {
             percentualFalsaCentral = "0%";
@@ -66,8 +67,10 @@ public class HomeController {
             String nivelRisco;
             if (tel.getTotalDenuncias() >= 5) {
                 nivelRisco = "ALTO";
-            } else if (tel.getTotalDenuncias() >= 1) {
+            } else if (tel.getTotalDenuncias() >= 2) {
                 nivelRisco = "MEDIO";
+            } else if (tel.getTotalDenuncias() == 1) {
+                nivelRisco = "BAIXO";
             } else {
                 nivelRisco = "SEM";
             }
@@ -84,7 +87,13 @@ public class HomeController {
     }
 
     @PostMapping("/denunciar")
-    public String salvarDenuncia(@ModelAttribute Denuncia denuncia) {
+    public String salvarDenuncia(@Valid @ModelAttribute Denuncia denuncia,
+                                 BindingResult resultado) {
+
+        // se houver erros de validação, volta pro form mostrando os erros
+        if (resultado.hasErrors()) {
+            return "denunciar";
+        }
 
         denuncia.setStatus(DenunciaStatus.PENDENTE);
         denuncia.setData(LocalDateTime.now());
