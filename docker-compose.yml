@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------------
+  # SERVIÇO DO BANCO DE DADOS: MySQL 8.0
+  # -------------------------------------------------------------------
+  db:
+    image: mysql:8.0
+    container_name: sentinela0800-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: Sentinela0800
+      MYSQL_ROOT_PASSWORD: root_password_sentinela
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # O healthcheck faz o Docker testar se o banco já terminou de ligar de verdade
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+      interval: 10s
+
+  # -------------------------------------------------------------------
+  # SERVIÇO DO BACK-END: Spring Boot (Sua aplicação)
+  # -------------------------------------------------------------------
+  app:
+    build: .
+    container_name: sentinela0800-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy # Só liga o Spring se o MySQL passar no teste acima
+    environment:
+      # Injeta dinamicamente as credenciais para o Spring achar o banco dentro do Docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/Sentinela0800?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root_password_sentinela
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_THYMELEAF_CACHE: "false"
+
+volumes:
+  mysql_data:
