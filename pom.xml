@@ -24,6 +24,7 @@
 
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
     <dependencies>
@@ -95,7 +96,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
                 <executions>
 
                     <execution>
