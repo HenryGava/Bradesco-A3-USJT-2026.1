@@ -80,7 +80,7 @@ O projeto utiliza tecnologias modernas do ecossistema Spring e uma arquitetura o
 | Nome | RA |
 |:---|:---:|
 | Henry Gava Salvaia | 825122158 |
-| Gustavo Almeida dos Santos Cunha | 824233519 |
+| Gustavo Almeida dos Santos Cunha | 825233519 |
 | Pedro Henrique Carvalho Vieira | 824211592 |
 | Gustavo Resende Fernandes | 82414925 |
 | Guilherme Nolasco Tucunduva | 82426795 |
